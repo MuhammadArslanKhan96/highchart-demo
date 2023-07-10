@@ -106,7 +106,7 @@ export function engagementHelper(
       shared: true,
       crosshairs: true,
       headerFormat: "{point.series.name}<br />",
-      pointFormat: `{point.y} messages on {point.category}`,
+      pointFormat: `<p style='font-size: 11px;'>{point.y} messages on {point.category}</p>`,
     },
   };
   return options;
