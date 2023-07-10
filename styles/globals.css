@@ -25,3 +25,27 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+.highcharts-background {
+  fill: #22222c;
+}
+.highcharts-axis.highcharts-xaxis > path {
+  stroke: white;
+}
+.highcharts-axis-labels.highcharts-yaxis-labels > text,
+.highcharts-legend-item > text,
+.highcharts-axis-labels.highcharts-xaxis-labels > text {
+  fill: white !important;
+  color: white !important;
+}
+.highcharts-credits,
+.highcharts-grid.highcharts-yaxis-grid {
+  display: none !important;
+}
+.highcharts-legend-box {
+  fill: #14151a !important;
+  border-radius: 15%;
+}
+.highcharts-crosshair.highcharts-crosshair-category {
+  stroke-width: 2px;
+  stroke: white;
+}
