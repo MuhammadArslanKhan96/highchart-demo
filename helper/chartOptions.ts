@@ -7,7 +7,6 @@ export function engagementHelper(
   channels: ChannelsTypes[]
 ) {
   let timings: string[] = [];
-
   let data = channels
     .map((c) => ({
       ...c,
@@ -19,6 +18,7 @@ export function engagementHelper(
           .filter((i) => i.channelId === (c.id || c.value))
           .map((i) => i.timeBucket),
       ],
+      type: 0,
     }))
     .filter(
       (i) =>
@@ -29,16 +29,41 @@ export function engagementHelper(
             new Date(i.timings[0]).toDateString()
         ).length
     );
-
   for (var c of data) {
     let newTimings = [...timings, ...c.timings];
     timings = newTimings
-      .filter((i) => !timings.includes(i))
+      .filter(
+        (i) =>
+          !timings.filter(
+            (item) =>
+              new Date(item).toDateString() === new Date(i).toDateString()
+          ).length
+      )
       .sort(function (a, b) {
         return new Date(b).getTime() - new Date(a).getTime();
       });
   }
 
+  // Convert dates to Date objects
+  var dateObjects: any[] = timings.map((date) => new Date(date));
+
+  // Find the minimum and maximum dates
+  var minDate = new Date(Math.min(...dateObjects));
+  var maxDate = new Date(Math.max(...dateObjects));
+
+  // Generate an array of missing dates
+  var missingDates = [];
+  var currentDate = new Date(minDate);
+
+  while (currentDate <= maxDate) {
+    var formattedDate = currentDate.toISOString();
+    if (!timings.includes(formattedDate)) {
+      missingDates.push(formattedDate);
+    }
+    currentDate.setDate(currentDate.getDate() + 1); // Move to the next day
+  }
+
+  timings = [...timings, ...missingDates];
   let options = {
     title: {
       text: null,
@@ -46,38 +71,16 @@ export function engagementHelper(
     chart: {
       type: "spline",
     },
-    sonification: {
-      duration: 27000,
-      afterSeriesWait: 1200,
-      defaultInstrumentOptions: {
-        instrument: "basic2",
-        mapping: {
-          playDelay: 500,
-        },
-      },
-    },
-    accessibility: {
-      screenReaderSection: {
-        axisRangeDateFormat: "%B %Y",
-        beforeChartFormat: "",
-      },
-      point: {
-        dateFormat: "%b %e, %Y",
-        valueDescriptionFormat: "{value}{separator}{xDescription}",
-      },
-      series: {
-        pointDescriptionEnabledThreshold: false,
-      },
-    },
+    colors: ["#009091"],
     plotOptions: {
       series: {
+        connectNulls: true,
         label: {
           connectorAllowed: true,
         },
         marker: {
           lineWidth: 4,
         },
-        cropThreshold: 10,
       },
     },
     series: data,
@@ -95,19 +98,48 @@ export function engagementHelper(
       grid: null,
     },
     xAxis: {
-      accessibility: {
-        description: "Percent unemployment of labor force",
-      },
-      categories: timings.map(
-        (i) => `${new Date(i).getDate()} ${months[new Date(i).getUTCMonth()]}`
-      ),
+      categories: timings
+        .sort(function (a, b) {
+          return new Date(b).getTime() - new Date(a).getTime();
+        })
+        .map((i) => `${new Date(i).toISOString()}`),
     },
     tooltip: {
       shared: true,
       crosshairs: true,
-      headerFormat: "{point.series.name}<br />",
-      pointFormat: `<p style='font-size: 11px;'>{point.y} messages on {point.category}</p>`,
+      headerFormat:
+        "<p style='font-weight: bold; color: white;'>{point.series.name}</p><br />",
+      pointFormat: `<p style='font-size: 11px; font-weight: normal; color: white; opacity: 90%;'>{point.y} messages on {point.category}</p>`,
     },
   };
+
+  // Reorder the data based on timings and x-axis categories
+  options.series.forEach(function (series) {
+    var data = series.data;
+    var timings = series.timings;
+
+    var reorderedData: any[] = [];
+    var newXAxisData: string[] = [];
+    options.xAxis.categories.forEach(function (category) {
+      var index = timings.findIndex(function (timing) {
+        return new Date(timing).toISOString() === category;
+      });
+      if (index !== -1) {
+        reorderedData.push(data[index]);
+      } else {
+        reorderedData.push(null);
+      }
+    });
+
+    series.data = reorderedData;
+    options.xAxis.categories.forEach(function (category) {
+      newXAxisData.push(
+        `${new Date(category).getDate()} ${
+          months[new Date(category).getMonth()]
+        }`
+      );
+    });
+    options.xAxis.categories = newXAxisData;
+  });
   return options;
 }

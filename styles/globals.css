@@ -28,13 +28,16 @@ body {
 .highcharts-background {
   fill: #22222c;
 }
-.highcharts-axis.highcharts-xaxis > path {
-  stroke: white;
-}
+
 .highcharts-axis-labels.highcharts-yaxis-labels > text,
-.highcharts-legend-item > text,
-.highcharts-axis-labels.highcharts-xaxis-labels > text,
-.highcharts-label.highcharts-tooltip.highcharts-color-0 > text {
+.highcharts-axis-labels.highcharts-xaxis-labels > text {
+  fill: #5d5d65 !important;
+  color: #5d5d65 !important;
+}
+.highcharts-axis.highcharts-xaxis > path {
+  stroke: #5d5d65;
+}
+.highcharts-legend-item > text {
   fill: white !important;
   color: white !important;
 }
@@ -48,11 +51,14 @@ body {
   border-radius: 15%;
 }
 .highcharts-crosshair.highcharts-crosshair-category {
-  stroke-width: 2px;
+  stroke-width: 1px;
   stroke: white;
 }
-.highcharts-label.highcharts-tooltip.highcharts-color-0 > path {
+.highcharts-label.highcharts-tooltip > path {
   fill: black !important;
-  stroke: white;
+  stroke: #009091;
   stroke-width: 1px;
+}
+.highcharts-point {
+  stroke-width: 0px;
 }
