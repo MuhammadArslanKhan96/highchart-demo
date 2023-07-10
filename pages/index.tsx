@@ -12,7 +12,6 @@ const Home = () => {
       messages,
       channels
     );
-    console.log(options)
     setOptions(options)
   }
 

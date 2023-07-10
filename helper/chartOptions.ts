@@ -31,17 +31,12 @@ export function engagementHelper(
     );
   for (var c of data) {
     let newTimings = [...timings, ...c.timings];
-    timings = newTimings
-      .filter(
-        (i) =>
-          !timings.filter(
-            (item) =>
-              new Date(item).toDateString() === new Date(i).toDateString()
-          ).length
-      )
-      .sort(function (a, b) {
-        return new Date(b).getTime() - new Date(a).getTime();
-      });
+    timings = newTimings.filter(
+      (i) =>
+        !timings.filter(
+          (item) => new Date(item).toDateString() === new Date(i).toDateString()
+        ).length
+    );
   }
 
   // Convert dates to Date objects
@@ -131,7 +126,7 @@ export function engagementHelper(
       }
     });
 
-    series.data = reorderedData;
+    series.data = reorderedData.reverse();
     options.xAxis.categories.forEach(function (category) {
       newXAxisData.push(
         `${new Date(category).getDate()} ${
@@ -139,7 +134,7 @@ export function engagementHelper(
         }`
       );
     });
-    options.xAxis.categories = newXAxisData;
+    options.xAxis.categories = newXAxisData.reverse();
   });
   return options;
 }
