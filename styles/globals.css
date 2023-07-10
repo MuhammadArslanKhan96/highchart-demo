@@ -33,12 +33,14 @@ body {
 }
 .highcharts-axis-labels.highcharts-yaxis-labels > text,
 .highcharts-legend-item > text,
-.highcharts-axis-labels.highcharts-xaxis-labels > text {
+.highcharts-axis-labels.highcharts-xaxis-labels > text,
+.highcharts-label.highcharts-tooltip.highcharts-color-0 > text {
   fill: white !important;
   color: white !important;
 }
 .highcharts-credits,
-.highcharts-grid.highcharts-yaxis-grid {
+.highcharts-grid.highcharts-yaxis-grid,
+.highcharts-legend-item > path.highcharts-point {
   display: none !important;
 }
 .highcharts-legend-box {
@@ -48,4 +50,7 @@ body {
 .highcharts-crosshair.highcharts-crosshair-category {
   stroke-width: 2px;
   stroke: white;
+}
+.highcharts-label.highcharts-tooltip.highcharts-color-0 > path {
+  fill: black !important;
 }

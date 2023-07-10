@@ -5,7 +5,7 @@ export function engagementHelper(
   messages: MessagesTypes[],
   channels: ChannelsTypes[]
 ) {
-  let arr: string[] = [];
+  let timings: string[] = [];
 
   let data = channels
     .map((c) => ({
@@ -22,8 +22,8 @@ export function engagementHelper(
     .filter((i) => i.data.length);
 
   for (var c of data) {
-    let newarr = [...arr, ...c.timings];
-    arr = newarr.filter((i) => newarr.includes(i));
+    let newTimings = [...timings, ...c.timings];
+    timings = newTimings.filter((i) => !timings.includes(i));
   }
 
   let options = {
@@ -77,7 +77,7 @@ export function engagementHelper(
         description: "Percent unemployment of labor force",
       },
       labels: {
-        format: "{text} --",
+        format: "{text} -",
       },
       grid: null,
     },
@@ -86,7 +86,7 @@ export function engagementHelper(
         description: "Time",
       },
       type: "datetime",
-      categories: arr.map((i) => `${new Date(i).toDateString()}`),
+      categories: timings.map((i) => `${new Date(i).toDateString()}`),
     },
     tooltip: {
       shared: true,
