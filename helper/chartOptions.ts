@@ -1,3 +1,4 @@
+import { months } from "./../data/months";
 import { ChannelsTypes } from "./../types/channels";
 import { MessagesTypes } from "@/types/mesage";
 
@@ -19,11 +20,23 @@ export function engagementHelper(
           .map((i) => i.timeBucket),
       ],
     }))
-    .filter((i) => i.data.length);
+    .filter(
+      (i) =>
+        i.data.length &&
+        i.timings.filter(
+          (date) =>
+            new Date(date).toDateString() !==
+            new Date(i.timings[0]).toDateString()
+        ).length
+    );
 
   for (var c of data) {
     let newTimings = [...timings, ...c.timings];
-    timings = newTimings.filter((i) => !timings.includes(i));
+    timings = newTimings
+      .filter((i) => !timings.includes(i))
+      .sort(function (a, b) {
+        return new Date(b).getTime() - new Date(a).getTime();
+      });
   }
 
   let options = {
@@ -83,14 +96,17 @@ export function engagementHelper(
     },
     xAxis: {
       accessibility: {
-        description: "Time",
+        description: "Percent unemployment of labor force",
       },
-      type: "datetime",
-      categories: timings.map((i) => `${new Date(i).toDateString()}`),
+      categories: timings.map(
+        (i) => `${new Date(i).getDate()} ${months[new Date(i).getUTCMonth()]}`
+      ),
     },
     tooltip: {
       shared: true,
       crosshairs: true,
+      headerFormat: "{point.series.name}<br />",
+      pointFormat: `{point.y} messages on {point.category}`,
     },
   };
   return options;

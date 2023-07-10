@@ -53,4 +53,6 @@ body {
 }
 .highcharts-label.highcharts-tooltip.highcharts-color-0 > path {
   fill: black !important;
+  stroke: white;
+  stroke-width: 1px;
 }
