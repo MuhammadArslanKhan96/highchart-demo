@@ -22,4 +22,6 @@ export interface ChannelsTypes {
   bitrate?: number | null;
   userLimit?: number | null;
   videoQualityMode?: number | null;
+  pointStart?: number;
+  pointInterval?: number;
 }

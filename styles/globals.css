@@ -62,3 +62,9 @@ body {
 .highcharts-point {
   stroke-width: 0px;
 }
+.custom-axis-line {
+  display: inline-block;
+  border-left: 1px solid black; /* Set the width and color of the vertical line */
+  height: 12px; /* Set the height of the vertical line */
+  margin-left: 5px; /* Adjust the spacing between the label and the line */
+}

@@ -7,8 +7,8 @@ import { useEffect, useState } from "react";
 const Home = () => {
   const [options, setOptions] = useState();
 
-  async function getOptions() {
-    const options: any = await engagementHelper(
+  function getOptions() {
+    const options: any = engagementHelper(
       messages,
       channels
     );

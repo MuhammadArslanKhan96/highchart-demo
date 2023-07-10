@@ -93,6 +93,7 @@ export function engagementHelper(
       grid: null,
     },
     xAxis: {
+      // tickWidth: 1, // Add tick line
       categories: timings
         .sort(function (a, b) {
           return new Date(b).getTime() - new Date(a).getTime();
